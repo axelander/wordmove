@@ -36,6 +36,7 @@ describe Wordmove::SqlAdapter do
     it "should replace host, path and write to sql" do
       expect(adapter).to receive(:replace_vhost!).and_return(true)
       expect(adapter).to receive(:replace_wordpress_path!).and_return(true)
+      expect(adapter).to receive(:replace_extra_fields!).and_return(true)
       expect(adapter).to receive(:write_sql!).and_return(true)
       adapter.adapt!
     end
@@ -104,6 +105,17 @@ describe Wordmove::SqlAdapter do
           expect(adapter).to receive(:replace_field!).with("ABSOLUTE_DUMP", "FUNK").and_return(true)
           adapter.replace_wordpress_path!
         end
+      end
+    end
+
+    context ".replace_extra_fields!" do
+      let(:source_config) { { extra_fields: { field1: "S1", field2: "S2" } } }
+      let(:dest_config)   { { extra_fields: { field1: "D1", field2: "D2" } } }
+
+      it "should replace source extra_fields with dest extra_fields" do
+        expect(adapter).to receive(:replace_field!).with("S1", "D1").and_return(true)
+        expect(adapter).to receive(:replace_field!).with("S2", "D2").and_return(true)
+        adapter.replace_extra_fields!
       end
     end
   end

@@ -16,7 +16,18 @@ module Wordmove
     def adapt!
       replace_vhost!
       replace_wordpress_path!
+      replace_extra_fields!
       write_sql!
+    end
+
+    def replace_extra_fields!
+      source_extra_fields = source_config[:extra_fields]
+      dest_extra_fields = dest_config[:extra_fields]
+      if source_extra_fields.keys == dest_extra_fields.keys
+        source_extra_fields.values.zip(dest_extra_fields.values).each do |source, dest|
+          replace_field!(source, dest)
+        end
+      end
     end
 
     def replace_vhost!

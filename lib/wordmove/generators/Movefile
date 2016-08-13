@@ -1,6 +1,8 @@
 local:
   vhost: "http://vhost.local"
   wordpress_path: "<%= wordpress_path %>" # use an absolute path here
+  extra_fields:
+    field_example: foo
 
   database:
     name: "<%= database.name %>"
